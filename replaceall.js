@@ -6,8 +6,8 @@ const params = {
         code: '800050',
     },
 }
-  
-fn(str, json)
+
+fn(obj, json)
 
 const s = {
     a: "{{params.mp_app_id}}",
