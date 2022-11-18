@@ -14,7 +14,7 @@ const s = {
     b: "{{params.query_page_num}}",
     c: "{{params.business}}",
     d: ["{{params.mp_app_id}}", 2, 3],
-    e: "{\"app_id\":\"{{params.mp_app_id}}\",\"search_name\":\"\",\"page_index\":\"{{params.query_page_num}}\",\"page_size\":\"{{params.query_page_size}}\",\"code\":\"{{params.business.code}}\",\"business\": \"{{params.business}}\"}",
+    e: "{\"app_id\":{{params.mp_app_id}},\"search_name\":\"\",\"page_index\":{{params.query_page_num}},\"page_size\":{{params.query_page_size}},\"code\":{{params.business.code}},\"business\": {{params.business}}}",
     f: {
         g: "{{params.mp_app_id}}",
     }
