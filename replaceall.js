@@ -7,8 +7,6 @@ const params = {
     },
 }
 
-fn(obj, json)
-
 const s = {
     a: "{{params.mp_app_id}}",
     b: "{{params.query_page_num}}",
@@ -20,8 +18,11 @@ const s = {
     }
 }
 
-// =>
-const result = {
+
+const result = convertJson(s, params);
+
+/*
+result = {
     a: "123",
     b: 1,
     c: {
@@ -30,3 +31,4 @@ const result = {
     d: ['123', 2, 3],
     e: "{\"app_id\":\"123\",\"search_name\":\"\",\"page_index\":1,\"page_size\":10,\"code\":\"800050\",\"business\":{\"code\":\"800050\"}}",
 }
+*/
