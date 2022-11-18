@@ -1,24 +1,29 @@
 function convertJson(originData, data) {
     const result = {};
-    originData &&
-        Object.entries(originData).forEach(([key, value]) => {
-            if (typeof value === 'string' && /abc/.test(value)) {
-                result[key] = convertString(value, data);
-            } else if ({}.toString.call(value) === '[object Array]') {
-                // 数组，遍历每个元素看下是否还有需要转换的
-                result[key] = convertArray(value, data);
-            } else if ({}.toString.call(value) === '[object Object]') {
-                // json，递归看下里层是否还有需要转换的
-                result[key] = convertJson(value, data);
-            } else {
-                result[key] = value;
-            }
-        });
+    Object.entries(originData).forEach(([key, value]) => {
+        if (typeof value === 'string' && /abc/.test(value)) {
+            result[key] = convertString(value, data);
+        } else if ({}.toString.call(value) === '[object Array]') {
+            // 数组，遍历每个元素看下是否还有需要转换的
+            result[key] = convertArray(value, data);
+        } else if ({}.toString.call(value) === '[object Object]') {
+            // json，递归看下里层是否还有需要转换的
+            result[key] = convertJson(value, data);
+        } else {
+            result[key] = value;
+        }
+    });
     return result;
 }
 
 function convertString(originValue, data) {
-    return '';
+    return originValue.replaceAll(/abc/g, (_, key) => {
+        const kdata = getDataFromJsonByKeyChain(key, data);
+        const typeofData = {}.toString.call(kdata);
+        return typeofData === '[object Array]' || typeofData === '[object Object]'
+          ? JSON.stringify(kdata)
+          : kdata;
+    });
 }
 
 function convertArray(originValue, data) {
@@ -37,6 +42,15 @@ function convertArray(originValue, data) {
 
         return v;
     });
+}
+
+// 从json中拿数据
+function getDataFromJsonByKeyChain(keyChain, data) {
+    let result = data;
+    keyChain.forEach((key) => {
+      result = result[key];
+    });
+    return result;
 }
 
 // 占位符变量替换成值
