@@ -17,12 +17,12 @@ function convertJson(originData, data) {
 }
 
 function convertString(originValue, data) {
-    return originValue.replaceAll(/{{\w+\.[\w.]+}}/g, (_, key) => {
+    return originValue.replaceAll(/{{\w+\.([\w.]+)}}/g, (_, key) => {
         const kdata = getDataFromJsonByKeyChain(key, data);
         const typeofData = {}.toString.call(kdata);
-        return typeofData === '[object Array]' || typeofData === '[object Object]'
-            ? JSON.stringify(kdata)
-            : kdata;
+        if (typeofData === '[object Array]' || typeofData === '[object Object]')
+            return JSON.stringify(kdata);
+        return typeof kdata === 'string' ? `${kdata}` : kdata;
     });
 }
 
@@ -50,11 +50,9 @@ function getDataFromJsonByKeyChain(keyChain, data) {
 
     if (!keys) return '';
 
-    keys.shift();
-
     let result = data;
     keys.forEach((key) => {
-      result = result[key];
+        result = result[key];
     });
     return result;
 }
